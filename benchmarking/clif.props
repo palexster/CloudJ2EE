@@ -1,0 +1,20 @@
+clif.parameters \
+-Dfractal.provider=org.objectweb.fractal.julia.Julia \
+-Dfractal.registry.port=1234 \
+-Djulia.config=etc/julia.cfg \
+-Djulia.loader=org.objectweb.fractal.julia.loader.DynamicLoader \
+-Dclif.codeserver.port=1357 \
+-Dclif.codeserver.path="benchmarking" \
+-Dclif.eclipse.statdir=benchmarking/stats \
+-Dclif.filestorage.dir=benchmarking/report \
+-Dclif.globaltime=false \
+-Dclif.filestorage.delay_s=60 \
+-Dclif.filestorage.maxpending=1000 \
+-Dclif.isac.threads=100 \
+-Dclif.isac.groupperiod=100 \
+-Dclif.isac.schedulerperiod=100 \
+-Dclif.isac.jobdelay=-1 \
+-Djava.security.policy=etc/java.policy \
+-Djava.util.logging.config.file=etc/javalog.props \
+-Xms128m -Xmx256m \
+-server

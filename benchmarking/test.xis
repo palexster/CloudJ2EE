@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+	<!DOCTYPE scenario SYSTEM "classpath:org/ow2/clif/scenario/isac/dtd/scenario.dtd">
+	<scenario>
+		<behaviors>
+			<plugins>
+				<use id="http" name="HttpInjector">
+					<params>
+						<param name="indepthload" value=""></param>
+						<param name="proxyhost" value=""></param>
+						<param name="proxyport" value=""></param>
+						<param name="proxyusername" value=""></param>
+						<param name="proxyuserpass" value=""></param>
+						<param name="preemptiveauthentication"
+							value="">
+						</param>
+						<param name="useragent" value=""></param>
+						<param name="unit" value="millisecond"></param>
+						<param name="id" value=''></param>
+					</params>
+				</use>
+				<use id="timer 5s" name="ConstantTimer">
+					<params>
+						<param name="duration_arg" value="5000"></param>
+						<param name="id" value=''></param>
+					</params>
+				</use>
+			</plugins>
+			<behavior id="B0">
+				<sample use="http" name="get">
+					<params>
+						<param name="uri"
+							value="http://www.google.com">
+						</param>
+						<param name="redirect" value=""></param>
+						<param name="headers" value=''></param>
+						<param name="parameters" value=''></param>
+						<param name="response-body" value=""></param>
+						<param name="username" value=""></param>
+						<param name="password" value=""></param>
+						<param name="hostauth" value=""></param>
+						<param name="realm" value=""></param>
+						<param name="proxylogin" value=""></param>
+						<param name="proxypassword" value=""></param>
+						<param name="cookies" value=''></param>
+						<param name="cookiepolicy"
+							value="compatibility">
+						</param>
+						<param name="proxyhost" value=""></param>
+						<param name="proxyport" value=""></param>
+						<param name="localaddress" value=""></param>
+						<param name="id" value=''></param>
+					</params>
+				</sample>
+				<timer use="timer 5s" name="sleep">
+					<params>
+						<param name="duration_arg" value="5000"></param>
+						<param name="id" value=''></param>
+					</params>
+				</timer>
+			</behavior>
+		</behaviors>
+		<loadprofile>
+			
+		<group behavior="B0" forceStop="false"><ramp style="line"><points><point x="0" y="0"></point><point x="600" y="200"></point></points></ramp><ramp style="line"><points><point x="600" y="200"></point><point x="1200" y="0"></point></points></ramp></group></loadprofile>
+</scenario>

@@ -1,0 +1,7 @@
+# date, state id, state label
+17,3,initializing
+33,4,initialized
+2226,5,starting
+2243,6,running
+53813,11,stopping
+54027,12,stopped
