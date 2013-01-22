@@ -122,6 +122,18 @@ public class Manager {
         } 
     }
     
+    public void addVMToMysqlProxy(String ipNewVM) {
+        try {
+            Runtime rt = Runtime.getRuntime();
+            String command = "mysql-proxy --proxy-backend-addresses=localhost:3306 --proxy-backend-addresses="+ipNewVM+":3306 &";
+            Process proc = rt.exec(command);
+            proc.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("UNABLE TO LINK THE NEW VM ");
+        }
+    }
+    
     public String getChargeCPU() {
         String chargeCPU = "UNDEFINED";
         try {
@@ -197,6 +209,8 @@ public class Manager {
             } while (!instance.isRunning());			
 		System.out.println("Run: Instance ID = " + instance.getInstanceId() + ", Public DNS Name = " + instance.getDnsName() + ", Private DNS Name = " + instance.getPrivateDnsName());			
                 this.parse.addNewInstanceRunning(instances[0]);
+                System.out.println("Adding link from mysql-proxy to the new VM................");
+                addVMToMysqlProxy(instance.getIpAddress());
 	} catch (EC2Exception ex) {
             ex.printStackTrace();
         } 
@@ -240,9 +254,9 @@ public class Manager {
         instance.scheduler(instance);  
         
         
-//        ConfigVM config = new ConfigVM();
-//        MachineVirtuelle vm2 = config.getVM("vm2");
-//        instance.startImage(vm2);
+        //ConfigVM config = new ConfigVM();
+        //MachineVirtuelle vm1 = config.getVM("vm1");
+        //instance.startImage(vm1);
 //        
     }
 }
