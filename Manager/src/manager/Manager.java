@@ -6,6 +6,7 @@ package manager;
 
 import com.amazonaws.services.simpleemail.model.GetSendQuotaRequest;
 import com.xerox.amazonws.ec2.EC2Exception;
+import com.xerox.amazonws.ec2.InstanceType;
 import com.xerox.amazonws.ec2.Jec2;
 import com.xerox.amazonws.ec2.LaunchConfiguration;
 import com.xerox.amazonws.ec2.ReservationDescription;
@@ -197,13 +198,15 @@ public class Manager {
             launchConfig.setMinCount(1);
             launchConfig.setMaxCount(1);
             launchConfig.setKernelId(m.getKernelName());
-	                       
+	    launchConfig.setInstanceType(InstanceType.getTypeFromString("c1.medium"));
+            
             ReservationDescription reservationDescription = ec2.runInstances(launchConfig);
             Instance instance = reservationDescription.getInstances().get(0);
+            
             String[] instances = new String[] {instance.getInstanceId()};
             
             do {
-		instance = ec2.describeInstances(instances).get(0).getInstances().get(0);				
+         	instance = ec2.describeInstances(instances).get(0).getInstances().get(0);				
 		System.out.println("Run: Instance ID = " + instance.getInstanceId() + ", State = " + instance.getState()+", IP = "+instance.getIpAddress());				
 		Thread.sleep(5000);
             } while (!instance.isRunning());			
@@ -215,13 +218,14 @@ public class Manager {
             ex.printStackTrace();
         } 
         catch (Exception e) {
+            System.out.println("");
             e.printStackTrace();
 	}
     }
     
     public void scheduler(Manager manager) {
         ConfigVM config = new ConfigVM();
-        MachineVirtuelle vm1 = config.getVM("vm1");
+        MachineVirtuelle vm1 = config.getVM("vm2");
         manager.executeCommand();
         if (isMachineOverloaded()) {
             System.out.println("Machine is overloaded");
@@ -250,13 +254,23 @@ public class Manager {
     }
     
     public static void main(String[] args){
-        Manager instance = new Manager(30,0.9,10,1500,"logsVM");
-        instance.scheduler(instance);  
+        if (args.length==3) {
+           Double percentmax = Double.valueOf(args[0]);
+           Double sondeTime = Double.valueOf(args[1]);
+           String logFileName = args[2];
+           Manager manager = new Manager(100, percentmax, sondeTime, 1500, logFileName);
+           manager.scheduler(manager);
+       } else {
+           System.out.println("Usage manager percentMax sondeTime logfile");
+       }
         
-        
-        //ConfigVM config = new ConfigVM();
-        //MachineVirtuelle vm1 = config.getVM("vm1");
-        //instance.startImage(vm1);
+//        Manager instance = new Manager(100,0.1,10,1500,"logsVM");
+//       // instance.scheduler(instance);  
+//        
+//        
+//        ConfigVM config = new ConfigVM();
+//        MachineVirtuelle vm1 = config.getVM("vm1");
+//        instance.startImage(vm1);
 //        
     }
 }
